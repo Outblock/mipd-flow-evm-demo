@@ -1,11 +1,10 @@
 "use client"
-import React, { useState, useEffect, useSyncExternalStore } from 'react';
-import { createStore } from 'mipd'
+import React, { useState, useSyncExternalStore } from 'react';
 import { ethers, formatEther } from 'ethers'
+import { createStore } from 'mipd'
+
 
 const store = createStore()
-
-
 
 const WalletConnect = () => {
   const [account, setAccount] = useState('');
@@ -13,18 +12,17 @@ const WalletConnect = () => {
   const [chainId, setChainId] = useState('');
   const [error, setError] = useState('');
   const [toAddress, setToAddress] = useState('');
-  const [selectedNetwork, setSelectedNetwork] = useState('');
   const [message, setMessage] = useState('');
   const [signature, setSignature] = useState('');
   const [provider, setProvider] = useState<any>(null)
 
-  const providers = useSyncExternalStore(store.subscribe, store.getProviders)
-  function getFlowWalletProvider() {
-    return providers.find(
-      (provider) => provider.info.rdns === 'com.flowfoundation.wallet',
+  const providers = useSyncExternalStore(store.subscribe, store.getProviders, () => null)
+
+  const getFlowWalletProvider = () => {
+    return providers!.find(
+      (provider: any) => provider.info.rdns === 'com.flowfoundation.wallet',
     );
   }
-
 
   // connect wallet
   const connectWallet = async () => {
@@ -87,7 +85,7 @@ const WalletConnect = () => {
 
 
       return signature
-    } catch (error) {
+    } catch (error: any) {
       return {
         success: false,
         error: error.message
@@ -132,3 +130,4 @@ const WalletConnect = () => {
 };
 
 export default WalletConnect;
+
